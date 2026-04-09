@@ -42,6 +42,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -80,7 +81,7 @@ import os
 # Ganti konfigurasi lama dengan ini
 DATABASES = {
     'default': dj_database_url.config(
-        default='postgresql://postgres:Jangantekan2026@db.ugafgstsdtvmnofhweji.supabase.co:6543/postgres',
+        default=os.getenv('DATABASE_URL', 'postgresql://postgres:Jangantekan2026@db.ugafgstsdtvmnofhweji.supabase.co:6543/postgres'),
         conn_max_age=600
     )
 }
