@@ -65,9 +65,9 @@ WSGI_APPLICATION = 'pmbp_project.wsgi.application'
 # Database Supabase
 DATABASES = {
     'default': dj_database_url.config(
-        default=os.getenv('DATABASE_URL', 'postgresql://postgres:Jangantekan2026@db.ugafgstsdtvmnofhweji.supabase.co:6543/postgres'),
-        conn_max_age=600
-    )
+    default='postgresql://postgres:Jangantekan2026@db.ugafgstsdtvmnofhweji.supabase.co:6543/postgres?sslmode=require',
+    conn_max_age=600
+)
 }
 
 # Password validation
