@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Input Laporan Ekskul</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Poppins', sans-serif; background-color: #f4f7f6; }
+        /* Gradasi biru khas Al Binaa untuk background header */
+        .header-bg { background: linear-gradient(135deg, #0056b3 0%, #00aaff 100%); height: 200px; width: 100%; position: absolute; top: 0; z-index: -1; }
+        .card { border: none; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); margin-top: 50px; }
+        .btn-primary { background: #0056b3; border: none; border-radius: 10px; padding: 12px; font-weight: 600; }
+        .btn-primary:hover { background: #004494; }
+        .btn-dashboard { color: white; text-decoration: none; font-weight: 500; }
+    </style>
+</head>
+<body>
+
+    <div class="header-bg"></div>
+
+    <div class="container">
+        <div class="pt-4">
+            <a href="/dashboard/" class="btn-dashboard">← Kembali ke Dashboard</a>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card p-4 p-md-5">
+                    {% load static %}
+                    <div class="text-center mb-4">
+                        <img src="{% static 'img/logo.png' %}" width="80" class="mb-3">
+                        <h3 class="fw-bold text-dark">Laporan Ekskul</h3>
+                        <p class="text-muted">Divisi PMBP Al Binaa</p>
+                    </div>
+
+                    <hr>
+
+                    <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            {{ form.as_p }}
+                        </div>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary shadow">Kirim Laporan Sekarang</button>
+                        </div>
+                    </form>
+                </div>
+
+                <p class="text-center mt-4 text-muted small">&copy; 2026 PMBP Al Binaa - Created by Kak Alif</p>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

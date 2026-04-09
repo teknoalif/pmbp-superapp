@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Admin PMBP</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <style>
+        body { font-family: 'Poppins', sans-serif; background-color: #f4f7f6; }
+
+        .navbar {
+            background: linear-gradient(135deg, #0056b3 0%, #00aaff 100%);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .navbar-brand img {
+            height: 45px;
+            width: auto;
+            margin-right: 12px;
+        }
+
+        .navbar-brand span {
+            letter-spacing: 1px;
+            font-size: 1.2rem;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+
+        .table thead { background-color: #0056b3; color: white; }
+        .btn-custom { border-radius: 8px; font-weight: 600; padding: 10px 20px; }
+
+        .card { border: none; border-radius: 15px; transition: 0.3s; }
+        .card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+
+        .user-greeting { font-size: 0.9rem; font-weight: 300; }
+        .badge-santri { background-color: #e9ecef; color: #495057; font-weight: 500; }
+    </style>
+</head>
+<body>
+
+    {% load static %}
+
+    <nav class="navbar navbar-expand-lg navbar-dark mb-4 py-2">
+        <div class="container">
+            <a class="navbar-brand fw-bold d-flex align-items-center" href="#">
+                <img src="{% static 'img/logo.png' %}" alt="Logo PMBP">
+                <span>PMBP SUPERAPP</span>
+            </a>
+            <div class="ms-auto d-flex align-items-center">
+                <span class="text-white me-3 user-greeting">Halo, **Kak Alif**</span>
+
+                <a href="javascript:void(0)" class="btn btn-sm btn-outline-light border-0"
+                   onclick="document.getElementById('logout-form').submit();">
+                   <i class="bi bi-box-arrow-right"></i> Logout
+                </a>
+                <form id="logout-form" action="/admin/logout/" method="POST" style="display: none;">
+                    {% csrf_token %}
+                </form>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-success alert-dismissible fade show shadow-sm mb-4" role="alert" style="border-radius: 15px;">
+                    <i class="bi bi-check-circle-fill me-2"></i> {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <div class="row mb-4 align-items-center">
+            <div class="col-md-6">
+                <h2 class="fw-bold text-dark">Dashboard Kendali Admin</h2>
+                <p class="text-muted">Kelola data ekskul dan asatiz Al Binaa secara tersentralisasi</p>
+            </div>
+            <div class="col-md-6 text-md-end">
+                <a href="/registrasi-pembina/" class="btn btn-success btn-custom shadow-sm">
+                    <i class="bi bi-person-plus"></i> + Registrasi Akun & Ekskul
+                </a>
+            </div>
+        </div>
+
+        <div class="card shadow-sm border-0">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover mb-0 align-middle">
+                <thead>
+                    <tr>
+                        <th class="ps-4">Tanggal Laporan</th>
+                        <th>Ekskul (Santri)</th>
+                        <th>Pembina</th>
+                        <th>Materi Kegiatan</th>
+                        <th>Bukti</th> <th class="text-center">Aksi</th> </tr>
+                </thead>
+                <tbody>
+                    {% for l in laporans %}
+                    <tr>
+                        <td class="ps-4 fw-semibold text-primary">
+                            {{ l.tanggal|date:"d M Y" }}
+                        </td>
+
+                        <td>
+                            <span class="fw-bold">{{ l.ekskul.nama }}</span><br>
+                            <small class="badge badge-santri"><i class="bi bi-people"></i> {{ l.jumlah_santri }} Santri</small>
+                        </td>
+
+                        <td>
+                            <div class="fw-semibold text-dark">{{ l.ekskul.nama_pembina }}</div>
+                            <small class="text-muted">ID: {{ l.ekskul.pembina.username }}</small>
+                        </td>
+
+                        <td>{{ l.materi|truncatechars:40 }}</td>
+
+                        <td>
+                            {% if l.dokumentasi %}
+                            <a href="{{ l.dokumentasi.url }}" target="_blank">
+                                <img src="{{ l.dokumentasi.url }}" alt="Bukti"
+                                     style="height: 40px; width: 40px; object-fit: cover; border-radius: 5px;"
+                                     class="border shadow-sm">
+                            </a>
+                            {% else %}
+                            <small class="text-muted">Tidak ada foto</small>
+                            {% endif %}
+                        </td>
+
+                        <td class="text-center">
+                            <div class="btn-group" role="group">
+                                <a href="/edit/{{ l.pk }}/" class="btn btn-sm btn-outline-warning" title="Edit Data">
+                                    <i class="bi bi-pencil-square"></i>
+                                </a>
+                                <a href="/hapus/{{ l.pk }}/" class="btn btn-sm btn-outline-danger" onclick="return confirm('Yakin hapus data laporan ini?')" title="Hapus Data">
+                                    <i class="bi bi-trash"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6" class="text-center py-5 text-muted">
+                            <i class="bi bi-inbox fs-1 d-block mb-2"></i>
+                            Belum ada laporan yang masuk hari ini.
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+        <footer class="text-center mt-5 pb-4 text-muted">
+            <small>&copy; 2026 **PMBP Al Binaa** - Created with ❤️ by **Kak Alif Guru Matematika**</small>
+        </footer>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
