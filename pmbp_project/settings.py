@@ -1,4 +1,4 @@
-import os
+﻿import os
 from pathlib import Path
 import dj_database_url # Import untuk handle database cloud
 
@@ -116,3 +116,4 @@ LOGOUT_REDIRECT_URL = 'input_laporan'
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'dashboard_admin'
 LOGOUT_REDIRECT_URL = 'login'
+
