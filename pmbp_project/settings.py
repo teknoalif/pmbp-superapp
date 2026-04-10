@@ -1,6 +1,6 @@
-﻿import os
+import os
 from pathlib import Path
-import dj_database_url # Import untuk handle database cloud
+# import dj_database_url # Import untuk handle database cloud
 
 # 1. PATH DASAR
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -10,7 +10,7 @@ SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'django-insecure-4gdkv1*s%_%g83$k*l6
 
 # 3. MODE DEBUG
 # Biarkan True saat testing lokal agar eror terlihat jelas
-DEBUG = True
+DEBUG = False
 
 # 4. HOST YANG DIIZINKAN
 ALLOWED_HOSTS = [
