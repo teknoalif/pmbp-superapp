@@ -1,2 +1,7 @@
 django
-gspreadgoogle-authgoogle-auth-oauthlibgoogle-auth-httplib2Pillowwhitenoise
+gspread
+google-auth
+google-auth-oauthlib
+google-auth-httplib2
+Pillow
+whitenoise
