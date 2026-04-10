@@ -1,17 +1,18 @@
 import os
 from pathlib import Path
-import dj_database_url
+import dj_database_url # Import untuk handle database cloud
 
-# Build paths inside the project
+# 1. PATH DASAR
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# SECURITY WARNING: keep the secret key used in production secret!
+# 2. SECURITY (Kunci Rahasia)
 SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'django-insecure-4gdkv1*s%_%g83$k*l6n$1*w=msb!8t58rzyyavg*r*6&h82j$')
 
-# DEBUG diset False untuk produksi agar aman
-DEBUG = os.getenv('DEBUG', 'False') == 'True'
+# 3. MODE DEBUG
+# Biarkan True saat testing lokal agar eror terlihat jelas
+DEBUG = True
 
-# Masukkan domain kamu di sini agar tidak Error 400/500
+# 4. HOST YANG DIIZINKAN
 ALLOWED_HOSTS = [
     'laporan-pmbp.kakalif.my.id',
     'pmbp-superapp.vercel.app',
@@ -20,7 +21,7 @@ ALLOWED_HOSTS = [
     '127.0.0.1'
 ]
 
-# Application definition
+# 5. APLIKASI YANG TERINSTAL
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -28,12 +29,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'core',
+    'core', # Aplikasi utama PMBP
 ]
 
+# 6. MIDDLEWARE (Jembatan Proses)
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',  # Untuk menangani file statis di Vercel
+    'whitenoise.middleware.WhiteNoiseMiddleware', # Menangani CSS/JS di Vercel
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -44,6 +46,7 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'pmbp_project.urls'
 
+# 7. PENGATURAN TEMPLATE (HTML)
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -62,15 +65,22 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'pmbp_project.wsgi.application'
 
-# Database Supabase
-DATABASES = {
-    'default': dj_database_url.config(
-    default='postgresql://postgres:Jangantekan2026@db.ugafgstsdtvmnofhweji.supabase.co:6543/postgres?sslmode=require',
-    conn_max_age=600
-)
-}
+# 8. PENGATURAN DATABASE (Lokal vs Cloud)
+# Jika di Vercel/Produksi, gunakan Supabase. Jika lokal, gunakan SQLite agar cepat.
+if os.getenv('DATABASE_URL'):
+    DATABASES = {
+        'default': dj_database_url.config(conn_max_age=600, ssl_require=True)
+    }
+else:
+    # Pakai database lokal Kakak saat testing
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
-# Password validation
+# 9. VALIDASI PASSWORD
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
     {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
@@ -78,22 +88,31 @@ AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
-# Internationalization
-LANGUAGE_CODE = 'en-us'
-TIME_ZONE = 'Asia/Jakarta' # Diubah ke WIB
+# 10. LOKALISASI (Waktu Indonesia)
+LANGUAGE_CODE = 'id-id'
+TIME_ZONE = 'Asia/Jakarta'
 USE_I18N = True
 USE_TZ = True
 
-# Static files (CSS, JavaScript, Images)
+# 11. FILE STATIS (CSS, JS, LOGO)
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'core/static')]
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles') # Lokasi koleksi static untuk produksi
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-# Konfigurasi WhiteNoise untuk kompresi file statis
+# Penyimpanan statis untuk Vercel
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+# 12. MEDIA FILES (FOTO DOKUMENTASI)
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# Media Files (Peringatan: Vercel tidak menyimpan media permanen tanpa Supabase Storage)
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+# 13. REDIRECT LOGIN/LOGOUT
+LOGIN_REDIRECT_URL = 'dashboard_admin'
+LOGOUT_REDIRECT_URL = 'input_laporan'
+
+# Pengaturan Redirect Login
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'dashboard_admin'
+LOGOUT_REDIRECT_URL = 'login'
