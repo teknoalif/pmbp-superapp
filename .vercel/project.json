@@ -1,16 +1,1 @@
-{
-  "projectId": "prj_pC3rrrZ0TXPPvhlKVVoNqvQRRLZV",
-  "orgId": "team_epNOAGxKbSdh44cecGgohoZh",
-  "projectName": "pbmp-superapp",
-  "settings": {
-    "createdAt": 1775715538810,
-    "framework": null,
-    "devCommand": null,
-    "installCommand": null,
-    "buildCommand": "sh build.sh",
-    "outputDirectory": null,
-    "rootDirectory": null,
-    "directoryListing": false,
-    "nodeVersion": "24.x"
-  }
-}
+{"projectId":"prj_pC3rrrZ0TXPPvhlKVVoNqvQRRLZV","orgId":"team_epNOAGxKbSdh44cecGgohoZh","projectName":"pbmp-superapp"}
